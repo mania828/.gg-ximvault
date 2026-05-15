@@ -4,13 +4,18 @@
   <meta charset="UTF-8" />
   <title>darkness.icu</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       background: #000;
       color: #eaeaea;
       font-family: "Courier New", monospace;
       height: 100vh;
+      width: 100vw;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -18,39 +23,55 @@
       overflow: hidden;
     }
 
+    /* BACKGROUND LAYER */
     #background {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       z-index: -1;
-      /* Replace with your circuit image path */
-      background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
-                  url('your-image.png');
+      /* Add your background image path here */
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                  url('your-background.png');
       background-size: cover;
       background-position: center;
       display: none;
     }
 
+    /* ENTRY - EXACTLY FROM lol.html */
     #entry {
       font-size: 18px;
-      letter-spacing: 5px;
+      letter-spacing: 2px;
       cursor: pointer;
+      opacity: 0.85;
       z-index: 10;
     }
 
-    #payload { z-index: 5; width: 90%; max-width: 800px; }
-
-    #info {
-      font-size: 14px;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      text-align: left;
-      text-shadow: 2px 2px 4px rgba(0,0,0,1);
+    /* PAYLOAD - CENTERED ALIGNMENT */
+    #payload {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 5;
     }
 
-    .hidden { display: none !important; }
+    #info {
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      display: inline-block;
+      text-align: left; /* Keeps the terminal look aligned left while the block is centered */
+    }
 
-    /* The "█" cursor effect */
+    .hidden {
+      display: none !important;
+    }
+
+    /* TYPEWRITER CURSOR */
     #info::after {
       content: "█";
       animation: blink 1s step-start infinite;
@@ -59,20 +80,43 @@
 
     @keyframes blink { 50% { opacity: 0; } }
 
-    #footer { position: fixed; bottom: 20px; font-size: 11px; opacity: 0.5; }
-    #fog { cursor: pointer; text-decoration: underline; }
+    /* FOOTER - EXACTLY FROM lol.html */
+    #footer {
+      position: fixed;
+      bottom: 20px;
+      text-align: center;
+      font-size: 11px;
+      opacity: 0.7;
+    }
+
+    #fog {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    #info img {
+      width: 18px;
+      height: auto;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
   </style>
 </head>
 <body>
 
   <div id="background"></div>
-  <div id="entry">[ CLICK TO ENTER ]</div>
+
+  <div id="entry">
+    darkness.icu
+  </div>
 
   <div id="payload" class="hidden">
     <pre id="info"></pre>
   </div>
 
-  <div id="footer">© 2026 <span id="fog">6fog.lol</span></div>
+  <div id="footer">
+    © 2026 <span id="fog">6fog.lol</span>
+  </div>
 
   <audio id="music" src="song.mp3" loop></audio>
 
@@ -81,28 +125,20 @@
     const payload = document.getElementById("payload");
     const info = document.getElementById("info");
     const music = document.getElementById("music");
+    const fog = document.getElementById("fog");
     const bg = document.getElementById("background");
 
     let started = false;
 
+    fog.onclick = (e) => {
+      e.stopPropagation();
+      window.location.href = "https://6fog.lol";
+    };
+
     function typeWriter(text, i = 0) {
       if (i < text.length) {
         info.textContent += text.charAt(i);
-        setTimeout(() => typeWriter(text, i + 1), 20);
-      }
-    }
-
-    async function getIPData() {
-      const controller = new AbortController();
-      const id = setTimeout(() => controller.abort(), 2000); // 2 second timeout
-
-      try {
-        const res = await fetch("https://ipapi.co/json/", { signal: controller.signal });
-        const data = await res.json();
-        clearTimeout(id);
-        return data;
-      } catch (e) {
-        return null; // Return null if API fails or times out
+        setTimeout(() => typeWriter(text, i + 1), 25);
       }
     }
 
@@ -114,34 +150,42 @@
       entry.classList.add("hidden");
       payload.classList.remove("hidden");
       
-      music.play().catch(() => console.log("Music trigger required interaction"));
+      music.play().catch(() => console.log("Audio requires interaction."));
 
-      const data = await getIPData();
-      let content = "";
+      try {
+        const res = await fetch("https://ipapi.co/json/");
+        const data = await res.json();
+        
+        const now = new Date();
+        const time = now.toLocaleString("en-GB", { hour12: false });
 
-      if (data) {
-        content = `CONNECTION ESTABLISHED...
-WELCOME TO DARKNESS.ICU
---------------------------------------
-TIME: ${new Date().toLocaleString("en-GB")}
-PLATFORM: ${navigator.platform}
-IP ADDRESS: ${data.ip}
-LOCATION: ${data.city}, ${data.country_name}
-PROVIDER: ${data.org}
---------------------------------------
-SYSTEM STATUS: ACTIVE`;
-      } else {
-        content = `ERROR: Connection data blocked.
-ACCESSING LOCAL TERMINAL...
---------------------------------------
-TIME: ${new Date().toLocaleString("en-GB")}
-PLATFORM: ${navigator.platform}
-USER AGENT: ${navigator.userAgent.split(') ')[0]})
---------------------------------------
-SYSTEM STATUS: OFFLINE MODE (LIMITED DATA)`;
+        const content = `Welcome To Darkness
+-------- TIME -------
+${time}
+------- DEVICE & BROWSER -------
+${navigator.platform} & ${navigator.userAgent.split(") ")[0]})
+------- IPDATA -------
+IP Address: ${data.ip}
+Country: ${data.country_name}
+Location: ${data.city}, ${data.region}
+Provider: ${data.org}
+------- LOCATION -------
+Continent: ${data.continent_code}
+Postal Code: ${data.postal}
+Coordinates: ${data.latitude}, ${data.longitude}
+Timezone: ${data.timezone}
+Currency: ${data.currency}
+Language: ${navigator.language}
+------- SECURITY -------
+Tor: No
+Proxy: No
+----- END -----`;
+
+        typeWriter(content);
+      } catch (error) {
+        const fallback = `ERROR: OFFLINE MODE\n------------------\nTIME: ${new Date().toLocaleString()}\nPLATFORM: ${navigator.platform}`;
+        typeWriter(fallback);
       }
-
-      typeWriter(content);
     };
   </script>
 </body>
