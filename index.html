@@ -1,252 +1,33 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>.gg/ximvault | Profile</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #0a0508; 
-      --stroke: rgba(255, 121, 198, 0.2); 
-      --text: #fff0f6;
-      --muted: #d8a8c1;
-      --accent: #ff79c6; 
-      --accent-2: #bd93f9; 
-      --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-      --radius: 22px;
-      --max: 1080px;
-      --panel: linear-gradient(180deg, rgba(30, 10, 20, 0.92), rgba(15, 5, 10, 0.9));
-      --panel-2: linear-gradient(180deg, rgba(40, 15, 30, 0.9), rgba(20, 8, 15, 0.9));
-      --discord-bg: #12080e;
-    }
-
-    * { box-sizing: border-box; cursor: crosshair; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 20% 15%, rgba(255, 121, 198, 0.15), transparent 25%),
-        radial-gradient(circle at 85% 55%, rgba(189, 147, 249, 0.1), transparent 25%),
-        linear-gradient(180deg, #0f050a 0%, #050204 100%);
-      min-height: 100vh;
-    }
-
-    .container {
-      width: min(var(--max), calc(100% - 32px));
-      margin: 0 auto;
-    }
-
-    .section { padding: 28px 0; }
-    .hero-wrap { padding: 54px 0 24px; }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 22px;
-      align-items: start;
-      background: var(--panel);
-      border: 1px solid var(--stroke);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 22px;
-      backdrop-filter: blur(12px);
-    }
-
-    .avatar-column {
-      position: relative;
-      width: 110px;
-      min-height: 110px;
-    }
-
-    .avatar {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      object-fit: cover;
-      image-rendering: auto;
-      border: 3px solid rgba(255, 121, 198, 0.35);
-      box-shadow: 0 0 0 6px rgba(255, 121, 198, 0.08);
-      display: block;
-      background: #1a0a14;
-    }
-
-    .status-badge {
-      position: absolute;
-      right: 6px;
-      bottom: 6px;
-      width: 24px;
-      height: 24px;
-      border: 4px solid var(--discord-bg);
-      border-radius: 50%;
-      background: #80848e;
-      z-index: 5;
-    }
-
-    .status-badge.online { background: #23a55a; }
-    .status-badge.dnd { background: #f23f43; }
-    .status-badge.idle { background: #f0b232; }
-
-    h1 { font-size: clamp(28px, 4vw, 42px); color: #ff79c6; text-shadow: 0 0 10px rgba(255, 121, 198, 0.3); }
-    .subtitle { margin-top: 6px; color: var(--muted); font-size: 14px; font-weight: 600; }
-    .desc { margin-top: 12px; color: #f8e1ed; line-height: 1.65; max-width: 780px; }
-
-    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 11px 16px;
-      border-radius: 12px;
-      color: white;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 14px;
-      border: 1px solid rgba(255, 121, 198, 0.2);
-      background: rgba(255, 121, 198, 0.1);
-      transition: .2s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      background: rgba(255, 121, 198, 0.2);
-      box-shadow: 0 12px 28px rgba(255, 121, 198, 0.15);
-    }
-
-    .btn.primary {
-      background: linear-gradient(90deg, var(--accent), #ff92d0);
-      color: #1a0a14;
-      border: none;
-    }
-
-    .card {
-      background: var(--panel-2);
-      border: 1px solid var(--stroke);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .bs-credit {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 8px 14px;
-      background: rgba(10, 5, 8, 0.8);
-      border: 1px solid var(--stroke);
-      border-radius: 12px;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      backdrop-filter: blur(8px);
-      z-index: 9999;
-      pointer-events: none;
-      box-shadow: var(--shadow);
-      opacity: 0.8;
-    }
-
-    @media (max-width: 840px) {
-      .hero { grid-template-columns: 1fr; text-align: center; }
-      .avatar-column { margin: 0 auto; }
-      .btn-row { justify-content: center; }
-      .grid-2 { grid-template-columns: 1fr; }
-    }
-  </style>
+  <title>darkness.icu</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container hero-wrap">
-    <section class="hero">
-      <div class="avatar-column">
-        <img class="avatar" src="https://cdn.discordapp.com/icons/1419533443812950088/a_166e83a013b97b721e884431159c464e.gif?size=1024" alt="Profile GIF">
-        <div id="hero-status-badge" class="status-badge offline"></div>
-      </div>
 
-      <div>
-        <h1 id="display-name">.gg/ximvault</h1>
-        <p class="subtitle">Vault Manager • Community Head</p>
-
-        <p class="desc">
-          Managing the vault and building high-performance communities. Stay tuned for the latest drops and updates.
-        </p>
-
-        <div class="btn-row">
-          <a class="btn primary" href="#" target="_blank">Discord Status</a>
-          <a class="btn" href="https://discord.gg/F4yVKnCNG">Join The Discord</a>
-          <a class="btn" href="https://www.tiktok.com/@ximvault">TikTok</a>
-        </div>
-
-        <div class="presence-card" style="margin-top: 20px;">
-          <div class="card" id="activity-content" style="color: var(--muted); font-size: 14px;">
-            Connecting to Discord...
-          </div>
-        </div>
-      </div>
-    </section>
+  <div id="entry">
+    darkness.icu
   </div>
 
-  <main class="container">
-    <section class="section">
-      <h2 style="margin-bottom: 20px;">XimVault Services</h2>
-      <div class="grid-2">
-        <article class="card">
-          <h3>Community Hosting</h3>
-          <p>Providing the best environments for gamers and enthusiasts.</p>
-        </article>
-        <article class="card">
-          <h3>Configuration</h3>
-          <p>Optimized settings and vault management for the elite.</p>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <footer style="text-align: center; padding: 40px; color: var(--muted);">
-    © 2026 .gg/ximvault
-  </footer>
-
-  <div class="bs-credit">
-    BetterSociety made this
+  <div id="payload" class="hidden">
+    <pre id="info"></pre>
   </div>
 
-  <script>
-    const DISCORD_USER_ID = "1477081931526045927"; 
+  <!-- FOOTER ALWAYS VISIBLE -->
+  <div id="footer">
+    © 2026 <span id="fog">6fog.lol</span>
+  </div>
 
-    async function loadPresence() {
-      // Logic check removed so it actually runs with your ID
-      try {
-        const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
-        const data = await res.json();
-        if (data.success) {
-          const status = data.data.discord_status;
-          const badge = document.getElementById('hero-status-badge');
-          badge.className = `status-badge ${status}`;
-          
-          const activity = data.data.activities.find(a => a.type !== 4);
-          document.getElementById('activity-content').innerText = activity ? 
-            `Playing: ${activity.name}` : "Currently chilling.";
-        }
-      } catch (e) {
-        document.getElementById('activity-content').innerText = "Status offline.";
-      }
-    }
-    setInterval(loadPresence, 10000);
-    loadPresence();
-  </script>
+  <audio id="music" src="song.mp3" loop></audio>
+  <script src="script.js"></script>
+
+
+
+
+
+
+
+  
 </body>
 </html>  
